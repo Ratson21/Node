@@ -132,8 +132,19 @@ app.use(provincesRoute)
 const bookRoute = require('./routes/book')
 app.use(bookRoute);
 
+//konfigurasi db global
 const conDB = require('./modules/dbCon')
 global.conDB = db;
+
+//konfigurasi login db
+const dbSeq = require('./models')
+dbSeq.sequelize.sync({ force : false})
+.then(() =>{
+    console.log("Database sync");
+})
+
+//user routes
+require('./routes/user.routes')(app);
 
 
 console.log("Server running in port : ", port)
