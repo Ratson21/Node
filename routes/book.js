@@ -50,7 +50,7 @@ router.get('/getBookByTitle', (req,res) =>{
     let query = ("SELECT * FROM book Where title = ?")
     conDB.query(query, req.query.title, (err, result, fields) => {
 
-        console.log("Id = ", req.query.id);
+        console.log("title = ", req.query.title);
 
         if (err) {
             
@@ -80,7 +80,7 @@ router.post('/insertBook', (req,res) =>{
     let query = ("INSERT INTO ratsonfebrian.book (id, title, isbn, writer, pages, `year`, `language`, price, rating, publisher, misc) VALUES ?")
     conDB.query(query, [values], (err, result, fields) => {
 
-        console.log("Id = ", values);
+        console.log("values = ", values);
 
         if (err) {
             
@@ -114,7 +114,7 @@ router.post('/insertMultiBook', (req,res) =>{
 
     conDB.query(query,[values], (err, result, fields) => {
 
-        console.log("Id = ", values);
+        console.log("values = ", values);
 
         if (err) {
             
