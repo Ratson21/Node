@@ -116,8 +116,10 @@
 //         res.send(result);
 //     });
 
+require('dotenv').config()
 const express = require('express')
 const app = express()
+const messages = require('./modules/message')
 const bodyParser = require('body-parser')
 const db = require('./modules/dbCon')
 app.use(bodyParser.json())
@@ -143,10 +145,13 @@ dbSeq.sequelize.sync({ force : false})
     console.log("Database sync");
 })
 
+//message biar global
+global.message = messages;
+
 //user routes
 require('./routes/user.routes')(app);
 
 
-console.log("Server running in port : ", port)
- app.listen(port)
+console.log("Server running in port : ", process.env.PORT)
+ app.listen(process.env.PORT)
 
