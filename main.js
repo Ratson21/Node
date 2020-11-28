@@ -123,6 +123,11 @@ const messages = require('./modules/message')
 const bodyParser = require('body-parser')
 const db = require('./modules/dbCon')
 app.use(bodyParser.json())
+
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+
 const port = 3000
 
 //konfigurasi routes provinces
@@ -151,7 +156,24 @@ global.message = messages;
 //user routes
 require('./routes/user.routes')(app);
 
+//socket routes
+require('./routes/socket.routes')(app)
 
-console.log("Server running in port : ", process.env.PORT)
- app.listen(process.env.PORT)
+io.on('connection', (Socket) => {
+    console.log("user connected");
+    Socket.on("disconnect", (reason) => {
+        console.log("User disconnected", reason);
+    })
+    Socket.on('chat', (message) =>{
+        io.emit('chat', message)
+    })
+})
+
+server.listen(process.env.port, () =>{
+    console.log("server running on port : ", process.env.port);
+})
+
+
+// console.log("Server running in port : ", process.env.PORT)
+//  app.listen(process.env.PORT)
 
